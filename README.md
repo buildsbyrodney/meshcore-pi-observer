@@ -13,13 +13,17 @@ Repeaters and RoomServers are not supported. The installer sends read-only Compa
 
 ## Install
 
-Download this project, review it, then run:
+On the Raspberry Pi, run these commands:
 
 ```bash
+sudo apt update
+sudo apt install -y git
+git clone https://github.com/buildsbyrodney/meshcore-pi-observer.git
+cd meshcore-pi-observer
 sudo bash scripts/install-meshcore-observer.sh --iata LOC
 ```
 
-Replace `LOC` with your 3–8 character uppercase region/IATA code. If more than one USB serial device is connected, specify the radio explicitly:
+Replace `LOC` with your 3–8 character uppercase region/IATA code. The installer will find the USB Companion automatically when it is the only serial device. If more than one USB serial device is connected, specify the radio explicitly:
 
 ```bash
 sudo bash scripts/install-meshcore-observer.sh \
@@ -27,7 +31,7 @@ sudo bash scripts/install-meshcore-observer.sh \
   --port /dev/serial/by-id/<your-companion-device>
 ```
 
-Use `--dry-run` to view the plan. It is deliberately plan-only: it does not ask for a password, inspect hardware, download anything, write files, change services, or make health assertions. Use `--repair` to rerun the pinned upstream capture installation and refresh only this installer's owned files.
+Use `--dry-run` to view the plan before installing. Use `--repair` to rerun the pinned upstream capture installation and refresh only this installer's owned files.
 
 The upstream capture installer remains interactive on its first run because it owns its system service and installation directory. Select **Serial** and the same `/dev/serial/by-id/...` device when prompted. Do not add an external broker in that upstream dialog; this installer adds the local broker integration afterward.
 
@@ -136,4 +140,3 @@ shellcheck scripts/install-meshcore-observer.sh tests/test-installer.sh
 ```
 
 The mocked tests cover syntax, the argument-preserving `check` helper, dry-run behavior, and IATA validation. Hardware, package installation, serial probing, service restarts, and upstream installer interactions must be validated on a disposable Pi before release; they are intentionally not run by these tests.
-
