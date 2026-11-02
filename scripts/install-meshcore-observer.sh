@@ -224,4 +224,3 @@ After reboot:
 EOF
 }
 main "$@"
-
