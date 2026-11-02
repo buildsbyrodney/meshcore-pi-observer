@@ -106,10 +106,10 @@ async def main(port):
         model = str(payload.get('model', '')).strip()
         version = str(payload.get('version', '')).strip()
         identity = (self_info.payload or {}).get('public_key') or (self_info.payload or {}).get('publicKey')
-        if not model or not version or not identity:
-            raise RuntimeError('no model, firmware version, and public key were returned')
-        print(f'Companion model: {model}')
-        print(f'Firmware: {version}')
+        if not identity:
+            raise RuntimeError('the Companion response did not include a public key')
+        print(f'Companion model: {model or "not reported"}')
+        print(f'Firmware: {version or "not reported"}')
         print(f'Public key: {identity}')
     finally:
         close = getattr(radio, 'close', None)
